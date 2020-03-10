@@ -6,7 +6,8 @@ import Todo from "../components/todo";
 export default class TodoList extends React.Component {
     state= {
         todos: [],
-        todosToShow: "all"
+        todosToShow: "all",
+        toggleAllComplete: true
     }
 
     addTodo = (todo) => {
@@ -45,9 +46,9 @@ export default class TodoList extends React.Component {
         })
     }
     handleDeleteToDo = id => {
-        this.setState ({
-            todos: this.state.todos.filter(todo => todo.id !== id)
-        })
+        this.setState(state => ({
+            todos: state.todos.filter(todo => todo.id !== id)
+        }))
     }
     removeAllTodoThatAreComplete = () => {
 
@@ -64,7 +65,7 @@ export default class TodoList extends React.Component {
         }
         else if (this.state.todosToShow === "active") {
             todos = this.state.todos.filter(todo => !todo.complete)
-            
+
 
         }
         else if (this.state.todosToShow === "complete") {
@@ -93,6 +94,15 @@ export default class TodoList extends React.Component {
             {this.state.todos.filter(todo => todo.complete).length ? (<div>
             <button onClick={() => this.removeAllTodoThatAreComplete()}>remove all complete todos</button>
             </div> ) : null}
+            <div onClick={() => this.setState({
+                todos: this.state.todos.map(todo => ({
+                    ...todo,
+                    complete: this.state.toggleComplete
+                })),
+                toggleAllComplete: !this.state.toggleAllComplete
+            })}>
+            <button>Toggle all complete: {`${this.state.toggleAllComplete}`}</button>
+            </div>
             </div>
 
 
